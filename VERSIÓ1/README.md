@@ -1,10 +1,10 @@
-Version-1-Grupo-4
+#Version-1-Grupo-4
 Somos Noor Bgiel, Izan Pulido y Aina Tamboleo y os vamos a presentar nuestra versión 1 del proyecto. Este documento consistirà en una explicación detallada de lo efectuado en cada paso para que sea fácil y rápido comprender cómo hemos evolucionado en cada sección de esta primera versión. Mencionar también que en la segunda mejoraremos ampliamente lo que está hecho hasta ahora ya que contiene dos fallos. En primer lugar, como se puede ver en el vídeo, aunque nuestra gráfica e interfaz funcionen correctamente, se están basando en los datos enviados desde el transmisor, no en los recibidos por el arduino tierra. Además en algunos códigos se puede ver que aun tenemos configurados algunos delays que también tendremos que modificar en la segunda versión. Dicho esto, os presentamos la versión 1 de nuestro proyecto.
 
-PASO 1
+##PASO 1
 Este paso fue el inicio de nuestro proyecto. Consistía en conectar una led roja para dejarla encendida. Luego también jugamos con los puntos de conexión de la led para poderla encender y apagar dependiendo del pin de salida al cual iba conectada. En este caso, usamos el siguiente còdigo:
 
-void setup () {
+```void setup () {
   //Definimos la led que usaremos, la cual estarà conectada al pin de salida correspondiente el número 13
   pinMode(13, OUTPUT);
 }
@@ -14,11 +14,11 @@ void loop(){
   delay(1000);
   digitalWrite(13,LOW);
   delay(1000);
-}
-PASO 2
+}'''
+##PASO 2
 El segundo paso también trataba sobre conectar leds pero con más complejidad que el primero. En primer lugar tuvimos que montar una led roja y una amarilla y crear un programa que hiciera que estas parpadeasen cada uno con un intervalo determinado. Para aconseguir esto usamos el siguiente código:
 
-//Definimos los leds (led 7 = rojo, led 8 = amarillo).
+'''//Definimos los leds (led 7 = rojo, led 8 = amarillo).
 const int led1 = 7;
 const int led2 = 8; 
 //Asignamos el tiempo durante el cual se mantendrà cada led encendida. En nuestro caso, quisimos que fuesen intervalos de 1 segundo alternandose.
@@ -57,11 +57,11 @@ void loop() {
         digitalWrite(led2, stateLed2);
         nextMillis2 = millis() + interval2;
     }
-}
-PASO 3
+}'''
+##PASO 3
 El paso 3 era de gran importancia ya que tuvimos que asegurar que la comunicación entre nuestra placa Arduino y nuestrfo portátil fuese correcta. Para asegurarnos, tuvimos que usar como modelo el siguiente código:
 
-int i=0;
+'''int i=0;
 void setup() {
    Serial.begin(9600);
 }
@@ -79,11 +79,11 @@ void setup() {
 void loop() {
    Serial.println(i);
    delay(1000);
-}
-PASO 4
+}'''
+##PASO 4
 Para hacer este paso necesitamos incorporar un nuevo elemento en nuestra placa de leds y cables; un sensor de temperatura. Aunque luego tuvimos que añadir funciones más complejas, en el paso 4 solo tuvimos que comprobar que los datos recolectados por el sensor llegasen cada X timepo a nuestro ordenador. Para efectuar esto tuvimos que usar lo siguiente: //Definiciones necesarias para usar el sensor de temperatura adecuadamente:
 
-#include <DHT.h>
+```#include <DHT.h>
 #define DHTPIN 2
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
@@ -107,14 +107,14 @@ void loop() {
       Serial.print(t);
       Serial.println("°C");
    }
-}
-PASO 5
+}'''
+##PASO 5
 El paso 5 consistía en crear un código que verificarà si el sensor de temperatura estaba captando datos correctamente. En este apartado, decicidmos crear una carpeta con los diferentes leds, sensor y otro material con el que habíamos trabajado para poder efectuar los códigos por separadado y, en caso de que uno falle poder detectar con inmediatez de cual se trataba.
 
-PASO 6
+##PASO 6
 En este paso tuvimos que estblecer la conexión entre dos arduinos unidos por 3 cables. El objetivo era que uno de los arduinos fuese el transmisor de los datos mientras que el otro tuviera la fuanción de recibirlos e mostrarlos en el ordenador. Empezamos con crear un programa qaue conectase los dos arduinos con la finalidad que la frase 'Empezamos la recepción' passarà de la placa transmisora y se mostrara en el Serial Monitor de la placa receptora:
 
-//Incluimos librerías necesarias.
+'''//Incluimos librerías necesarias.
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(10, 11); // RX, TX (azul, naranja)
 unsigned long nextMillis = 500;
@@ -129,11 +129,11 @@ void loop() {
       String data = mySerial.readString();
       Serial.print(data);
    }
-}
-PASO 7
+}'''
+##PASO 7
 Este paso consistía en asegurarse, no solamente de que nuestro arduino transmisor estuviera enviando datos sino que nuestro arduino receptos los estuviera captando correctamente. Para poder efectuar este paso necesitamos:
 
-//Le indicamos al programa que usando la placa identificada como COM3 nos envie repetidamente una verificación de que nuestros mensajes se envien correctamente a la placa receptor arduino.
+'''//Le indicamos al programa que usando la placa identificada como COM3 nos envie repetidamente una verificación de que nuestros mensajes se envien correctamente a la placa receptor arduino.
 import serial
 device = 'COM3'
 mySerial = serial.Serial(device, 9600)
@@ -141,18 +141,18 @@ while True:
    if mySerial.in_waiting > 0:
       linea = mySerial.readline().decode('utf-8').rstrip()
       print(linea)
-Para poder usar "mySerial" nos tuvimos que instalar ciertas librerías.
+//Para poder usar "mySerial" nos tuvimos que instalar ciertas librerías.'''
 
-PASO 8
+##PASO 8
 En este caso, una vez establecida la conexión entre arduinos, nos teníamos que plantear la situación que el arduino conectado al sensor era el satelite mientras que el otro arduino, el arduino tierra, recibia esos datos colectados cada 3 segundos. Además tuvimos que conectar una led verde a cada uno de los arduinos. El led verde conectado al arduino satelite tenía que encenderse brevemente cada vez que este enviara datos, mientras que el led verde tierra tenía que hacerlo cada vez que los recibía.
 
-PASO 9
+##PASO 9
 Para hacer este paso tuvimos que simplificar la manera en la que el arduino satelite enviaba los datos al arduino tierra, ya que nuestro objetivo era crear una gráfica que mostrara los valores de humedad y temperatura dependiendo del tiempo, en el cual 0 se consideraba cuando empezaba el programa. Para desarrollar este paso tuvimos que instalar la librería matplotlib.
 
-PASO 10 y PASO 11
+##PASO 10 y PASO 11
 Para efectuar este paso tuvimos que usar la librería Tinker, la cual consistia en facilitar la interaccion del programa de Python y el usuario. Para hacerlo tuvimos que programar 3 botones con los que el usuario puede interactuar con la gràfica. En primer lugar aparece el botón de INICIAR, el cual el usuario tiene que clicar para que la gráfica se ponga en marcha. Para parar la gráfica y que deje de recopilar datos tuvimos que añadir el botón de PARAR. Finalmente, el botón REANUDAR se encargaba de volver a ejecutar la gráfica después de usar el botón de PARAR. El código usado para definir cada uno de los botones es el siguiente:
 
-#Asignamos cada botón de la interfaz:
+'''#Asignamos cada botón de la interfaz:
 AButton = Button(window, text="Iniciar", bg="#0AAE28", fg="white", font=("Arial", 10, "bold"), command=AClick)
 AButton.grid(row=1, column=0, padx=10, pady=5, sticky=N + S + E + W)
 
@@ -169,7 +169,7 @@ canvas = FigureCanvasTkAgg(fig, master=window)
 canvas_widget = canvas.get_tk_widget()
 canvas_widget.grid(row=1, column=1, rowspan=3, padx=10, pady=10, sticky=N + S + E + W)
 PASO 13
-El último paso consistía en añadir unas alarmas, es decir unos señales, que facilitaran información al usuario sobre cierros errores que se pudieran provocar al empezar el programa. En primer lugar añadimos al satelite tierra un led blanco y lo programamos para que se encendira cuando los datos que recibía eran nulos. Seguidamente, incorporamos también al satelite tierra un led azul que se encendía cada vez que se perdía la conexión entre el arduino satelite y el arduino tierra.
+El último paso consistía en añadir unas alarmas, es decir unos señales, que facilitaran información al usuario sobre cierros errores que se pudieran provocar al empezar el programa. En primer lugar añadimos al satelite tierra un led blanco y lo programamos para que se encendira cuando los datos que recibía eran nulos. Seguidamente, incorporamos también al satelite tierra un led azul que se encendía cada vez que se perdía la conexión entre el arduino satelite y el arduino tierra.```
 
-RESUMEN Y VÍDEO
+##RESUMEN Y VÍDEO
 Aquí mostraremos el resultado final de la version 1 de nuestro proyecto. En primer lugar mencionar que finalizando el paso 13 (en concreto cuando estábamos definendo la led azul nos dimos cuenta de un error que cometimos y no tuvimos tiempo de arreglarlo. El problema se basaba en que la gráfica y la interfaz estaban vinculadoa al arduino satelite y, por lo tanto los datos que salían no se basaban en si el arduino tierra había recibido los datos correctamente, sino en si el arduino satelite los había enviado. Obviamente, al ser la versión 1, tenemos pensado correjir este error en la siguiente versión. Finalmente, aquí se muestran los códigos finales y el vídeo: https://github.com/user-attachments/assets/81598bda-d373-46a8-9ea7-3bd681d3155d
