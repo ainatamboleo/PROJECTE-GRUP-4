@@ -20,7 +20,7 @@ Malgrat que la majoria de codis estan fets i basats en codis explicats a classe 
 Aquí hem recopilat els codis unitaris usats fins ara:
 
 **CODI UNITARI SENSOR DE TEMPERATURA I HUMITAT**
-'''C
+```C
 // Definiciones necesarias
 #include <DHT.h>
 #define DHTPIN 2
@@ -46,10 +46,10 @@ void loop() {
       Serial.println("°C");
    }
 }
-'''
+```
 
 **CODI UNITARI SENSOR DE DISTÀNCIA**
-'''C
+```C
 #include <Servo.h>
 
 Servo radarServo;
@@ -89,12 +89,12 @@ void loop() {
     else { Serial.print(dist); Serial.println(" cm"); }
   }
 }
-'''
+```
 
 **CODI UNITARI ARDUINO SATÈL·LIT I ARDUINO TERRA**
 
 ***ARDUINO SATÈL·LIT***
-'''C
+```C
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX = 10, TX = 11 (igual que en tu código)[cite: 2]
@@ -143,10 +143,10 @@ void loop() {
     Serial.println(okRecibido ? "SI" : "NO");
     okRecibido = false;
   }
-  '''
+  ```
   
 ***ARDUINO TERRA***
-'''C
+```C
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX = 10, TX = 11 (igual que en tu código)[cite: 3]
@@ -210,7 +210,7 @@ void loop() {
     Serial.println("[TIERRA] AVISO: Timeout esperando PONG (revisar cableado TX/RX y GND)");
   }
 }
-'''
+```
 
 ## VÍDEO
 Aquí us adjuntem el nostre vídeo de la VERSIÓ 2:
