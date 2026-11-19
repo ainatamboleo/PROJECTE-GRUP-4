@@ -20,13 +20,15 @@ Malgrat que la majoria de codis estan fets i basats en codis explicats a classe 
 Aquí hem recopilat els codis unitaris usats fins ara:
 
 **CODI UNITARI SENSOR DE TEMPERATURA I HUMITAT**
-'''
+'''C
+// Definiciones necesarias
 #include <DHT.h>
 #define DHTPIN 2
 #define DHTTYPE DHT11
 DHT dht(DHTPIN, DHTTYPE);
 void setup() {
    Serial.begin(9600);
+   // Inicialización del sensor
    dht.begin();
 }
 void loop() {
@@ -47,7 +49,7 @@ void loop() {
 '''
 
 **CODI UNITARI SENSOR DE DISTÀNCIA**
-'''
+'''C
 #include <Servo.h>
 
 Servo radarServo;
@@ -70,6 +72,7 @@ long medirDistancia() {
   delayMicroseconds(10);
   digitalWrite(trigPin, LOW);
 
+  // Timeout de 25000 us (~4 metros máximo) para no bloquear el programa
   long duracion = pulseIn(echoPin, HIGH, 25000);
   if (duracion == 0) return -1; // Indica error o fuera de rango
   return duracion * 0.034 / 2;
@@ -88,9 +91,10 @@ void loop() {
 }
 '''
 
-**CODI UNITARI CONNEXIÓ ENTRE ARDUINO SATÈL·LIT I ARDUINO TERRA**
+**CODI UNITARI ARDUINO SATÈL·LIT I ARDUINO TERRA**
+
 ***ARDUINO SATÈL·LIT***
-'''
+'''C
 #include <SoftwareSerial.h>
 
 SoftwareSerial mySerial(10, 11); // RX = 10, TX = 11 (igual que en tu código)[cite: 2]
@@ -107,6 +111,7 @@ void setup() {
 }
 
 void loop() {
+  // 1. Escuchar mensajes desde Arduino Tierra
   if (mySerial.available() > 0) {
     String msg = mySerial.readStringUntil('\n');
     msg.trim();
@@ -124,6 +129,7 @@ void loop() {
     }
   }
 
+  // 2. Enviar mensaje de prueba cada 1 segundo
   if (millis() - ultimoEnvioTest >= intervaloTest) {
     ultimoEnvioTest = millis();
     contadorTest++;
@@ -138,11 +144,12 @@ void loop() {
     okRecibido = false;
   }
   '''
-  ***ARDUINO TERRA***
-  '''
-  #include <SoftwareSerial.h>
+  
+***ARDUINO TERRA***
+'''C
+#include <SoftwareSerial.h>
 
-SoftwareSerial mySerial(10, 11); // RX = 10, TX = 11 
+SoftwareSerial mySerial(10, 11); // RX = 10, TX = 11 (igual que en tu código)[cite: 3]
 
 unsigned long ultimoPing = 0;
 unsigned long tiempoEnvioPing = 0;
@@ -159,6 +166,7 @@ void setup() {
 }
 
 void loop() {
+  // 1. Enviar PING periódico para comprobar ida y vuelta
   if (millis() - ultimoPing >= intervaloPing) {
     ultimoPing = millis();
     tiempoEnvioPing = millis();
@@ -167,6 +175,8 @@ void loop() {
     mySerial.println("PING");
     Serial.println("[TIERRA] Enviado: PING");
   }
+
+  // 2. Escuchar respuestas y paquetes del Satélite
   if (mySerial.available() > 0) {
     String datos = mySerial.readStringUntil('\n');
     datos.trim();
@@ -188,17 +198,19 @@ void loop() {
         Serial.print(" | Total paquetes: ");
         Serial.println(paquetesRecibidos);
 
+        // Confirmación igual que en tu código de Tierra[cite: 3]
         mySerial.println("Ok");
       }
     }
   }
 
+  // 3. Avisar si no llega PONG tras 1.5 segundos
   if (esperandoPong && (millis() - tiempoEnvioPing > 1500)) {
     esperandoPong = false;
-    
     Serial.println("[TIERRA] AVISO: Timeout esperando PONG (revisar cableado TX/RX y GND)");
   }
 }
 '''
+
 ## VÍDEO
 Aquí us adjuntem el nostre vídeo de la VERSIÓ 2:
