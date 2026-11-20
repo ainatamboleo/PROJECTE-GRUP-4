@@ -1,4 +1,3 @@
-´´´C
 #include <SoftwareSerial.h>
 SoftwareSerial mySerial(10, 11);
 
@@ -106,4 +105,3 @@ void loop() {
       }
    }
 }
-´´´
