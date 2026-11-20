@@ -270,7 +270,7 @@ void loop() {
       }
    }
 
-   // 4. Apagado no bloqueante del LED verde del satélite
+   // 4. Apagado del LED verde del satélite
    if ((ledEncendido == true) && (millis() - tiempoEncendidoLed >= intervaloParpadeoLed)) {
       digitalWrite(ledVerdeSatelite, LOW);
       ledEncendido = false;
