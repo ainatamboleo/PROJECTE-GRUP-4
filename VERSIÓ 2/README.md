@@ -213,5 +213,6 @@ void loop() {
 ```
 
 ## VÍDEO
-Aquí us adjuntem el nostre vídeo de la VERSIÓ 2: https://drive.google.com/file/d/1EldoWImuvnvYieY3RKaKXQMirU95njrL/view?usp=drivesdk
+Aquí us adjuntem el nostre vídeo de la VERSIÓ 2: 
+https://drive.google.com/file/d/1xmKKpcqo4Q6EyASEhIyqygyjgPP1B5id/view?usp=drivesdk
 No ho hem pogut pujar d'una altra manera ja que el vídeo ocupava molt d'espai, disculpin si això fos un inconvenient.
